@@ -32,9 +32,10 @@ class VoroPlusPlusConan(ConanFile):
 
     def build(self):
         with tools.chdir(self._source_subfolder):
+            os.unlink('config.mk')
+            with open('config.mk', 'w') as f:
+                f.write('E_INC=-I../../src\nE_LIB=-L../../src')
             autotools = AutoToolsBuildEnvironment(self)
-            if self.options.fPIC:
-                autotools.cxx_flags = "-fPIC"
             autotools.make()
 
     def package(self):
